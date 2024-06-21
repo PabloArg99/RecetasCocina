@@ -1,10 +1,10 @@
 
 import { createRouter, createWebHistory } from 'vue-router';
-import ListaDeRecetas from './components/ListaDeRecetas.vue';
-import DetalleReceta from './components/DetalleReceta.vue';
-import FormularioReceta from './components/FormularioReceta.vue';
-import Login from './components/Login.vue';
-import Register from './components/Register.vue';
+import ListaDeRecetas from './components/ListaDeRecetas/ListaDeRecetasIndex.vue';
+import FormularioReceta from './components/FormularioReceta/FormularioRecetaIndex.vue';
+import Register from './components/Register/RegisterIndex.vue';
+import Login from './components/Login/LoginIndex.vue';
+import DetalleReceta from './components/DetalleReceta/DetalleRecetaIndex.vue';
 
 const routes = [
   { path: '/', component: ListaDeRecetas },
@@ -12,6 +12,8 @@ const routes = [
   { path: '/agregar', component: FormularioReceta },
   { path: '/login', component: Login },
   { path: '/register', component: Register },
+  
+  { path: '/:pathmatch(.*)*', redirect: '/' }
 ];
 
 const router = createRouter({

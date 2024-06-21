@@ -1,0 +1,33 @@
+
+    <div :class="['receta-container']">
+      <h1 :class="['receta-title']">{{ receta?.nombre }}</h1>
+      <div :class="['receta-image-container']">
+        <img :src="receta?.imagen" alt="Imagen de la receta" :class="['receta-image']">
+      </div>
+      
+      <h3 :class="['receta-subtitle', 'is-clickable']" @click="toggleSection('showDescripcion')">
+        Descripción
+      </h3>
+      <p :class="['receta-descripcion', { 'is-hidden': !showDescripcion }]">
+        {{ receta?.descripcion }}
+      </p>
+      
+      <h3 :class="['receta-subtitle', 'is-clickable']" @click="toggleSection('showIngredientes')">
+        Ingredientes
+      </h3>
+      <div :class="['receta-section', { 'is-hidden': !showIngredientes }]">
+        <ul :class="['receta-list']">
+          <li v-for="ingrediente in receta?.ingredientes" :key="ingrediente" :class="['receta-item']">{{ ingrediente }}</li>
+        </ul>
+      </div>
+      
+      <h3 :class="['receta-subtitle', 'is-clickable']" @click="toggleSection('showPasos')">
+        Pasos
+      </h3>
+      <div :class="['receta-section', { 'is-hidden': !showPasos }]">
+        <ol :class="['receta-list']">
+          <li v-for="paso in receta?.pasos" :key="paso" :class="['receta-item']">{{ paso }}</li>
+        </ol>
+      </div>
+    </div>
+  
