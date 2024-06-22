@@ -1,6 +1,7 @@
 
 import { useGlobalStore } from '@/stores/global.js';
 import axios from 'axios';
+import * as servicioRecetas from '@/servicios/recetas.js'
 
 export default {
   data() {
@@ -19,13 +20,16 @@ export default {
   },
   methods: {
     async cargarRecetas() {
-      try {
-        const response = await axios.get('https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas');
-        this.recetas = response.data;
-        this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
-      } catch (error) {
-        console.error('Error al cargar las recetas:', error);
-      }
+        const recetas = await servicioRecetas.getAll()
+        this.recetas = recetas
+
+      // try {
+      //   const response = await axios.get('https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas');
+      //   this.recetas = response.data;
+      //   this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
+      // } catch (error) {
+      //   console.error('Error al cargar las recetas:', error);
+      // }
     },
     async eliminarReceta(id) {
       try {
