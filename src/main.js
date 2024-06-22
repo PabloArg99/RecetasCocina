@@ -2,10 +2,10 @@
 
 import { createApp } from 'vue';
 import App from './App.vue';
-import router from './router'; // Asegúrate de que estás importando el archivo correcto
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle.js';
+import router from './router'; 
 import { createPinia } from 'pinia';
+
+import './bootstrap'
 
 const app = createApp(App);
 const pinia= createPinia()
