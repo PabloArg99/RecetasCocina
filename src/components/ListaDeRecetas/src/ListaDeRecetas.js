@@ -1,4 +1,5 @@
 
+import { useGlobalStore } from '@/stores/global.js';
 import axios from 'axios';
 
 export default {
@@ -7,8 +8,11 @@ export default {
       recetas: [],
       recetasFavoritas: [],
       mostrarModalEditar: false,
-      recetaEditando: {}
+      recetaEditando: {},
+      globalStore : useGlobalStore()
+      
     };
+   
   },
   beforeMount() {
     this.cargarRecetas();
