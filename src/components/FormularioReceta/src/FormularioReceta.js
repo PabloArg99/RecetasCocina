@@ -1,5 +1,5 @@
-
-import axios from 'axios';
+import * as servicioRecetas from '@/servicios/recetas.js';
+import { useGlobalStore } from '@/stores/global.js';
 
 export default {
   data() {
@@ -9,14 +9,17 @@ export default {
         descripcion: '',
         ingredientes: [],
         pasos: [],
-        imagen: ''
+        imagen: '',
+        autor: ''
       },
       nuevoIngrediente: '',
       nuevoPaso: '',
       nombreError: '',
       descripcionError: '',
       ingredientesError: '',
-      pasosError: ''
+      pasosError: '',
+      loginError: '',
+      globalStore: useGlobalStore() 
     };
   },
   methods: {
@@ -46,18 +49,19 @@ export default {
         this.pasosError = 'Debe agregar al menos un paso.';
       }
     },
-    agregarCampo(campo, valor) {
-      if (valor) {
-        this.receta[campo].push(valor);
-        this[campo] = '';
+    agregarIngrediente() {
+      if (this.nuevoIngrediente) {
+        this.receta.ingredientes.push(this.nuevoIngrediente);
+        this.nuevoIngrediente = '';
         this.validateIngredientes();
       }
     },
-    agregarIngrediente() {
-      this.agregarCampo('ingredientes', this.nuevoIngrediente, 'Debe ingresar un ingrediente.');
-    },
     agregarPaso() {
-      this.agregarCampo('pasos', this.nuevoPaso, 'Debe ingresar un paso.');
+      if (this.nuevoPaso) {
+        this.receta.pasos.push(this.nuevoPaso);
+        this.nuevoPaso = '';
+        this.validatePasos();
+      }
     },
     async submitForm() {
       this.validateNombre();
@@ -66,9 +70,20 @@ export default {
       this.validatePasos();
 
       if (!this.nombreError && !this.descripcionError && !this.ingredientesError && !this.pasosError) {
+        const globalStore = this.globalStore; 
+
+        if (!globalStore.isUserLoggedIn) {
+          this.loginError = 'Debes estar logueado para agregar una receta.';
+          console.error(this.loginError);
+          return;
+        }
+
         try {
-          const response = await axios.post('https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas', this.receta);
-          console.log('Receta enviada:', response.data);
+          const usuarioActual = globalStore.getActiveUsername;
+          this.receta.autor = usuarioActual;
+
+          const response = await servicioRecetas.create(this.receta);
+          console.log('Receta enviada:', response);
 
           this.receta.nombre = '';
           this.receta.descripcion = '';
@@ -76,13 +91,17 @@ export default {
           this.receta.pasos = [];
           this.receta.imagen = '';
 
-          this.$emit('recetaAgregada', response.data); 
+          this.$emit('recetaAgregada', response); 
         } catch (error) {
           console.error('Error al enviar la receta:', error);
         }
       } else {
         console.log('Corrige los errores antes de enviar la receta.');
       }
+    },
+    handleFormSubmit(event) {
+      event.preventDefault(); 
+      this.submitForm();
     }
   },
   computed: {

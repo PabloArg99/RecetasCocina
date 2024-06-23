@@ -1,7 +1,5 @@
-
 import { useGlobalStore } from '@/stores/global.js';
-import axios from 'axios';
-import * as servicioRecetas from '@/servicios/recetas.js'
+import * as servicioRecetas from '@/servicios/recetas.js';
 
 export default {
   data() {
@@ -10,48 +8,47 @@ export default {
       recetasFavoritas: [],
       mostrarModalEditar: false,
       recetaEditando: {},
-      globalStore : useGlobalStore()
-      
+      globalStore: useGlobalStore(),
     };
-   
   },
   beforeMount() {
     this.cargarRecetas();
   },
   methods: {
     async cargarRecetas() {
-        const recetas = await servicioRecetas.getAll()
-        this.recetas = recetas
-
-      // try {
-      //   const response = await axios.get('https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas');
-      //   this.recetas = response.data;
-      //   this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
-      // } catch (error) {
-      //   console.error('Error al cargar las recetas:', error);
-      // }
+      const recetas = await servicioRecetas.getAll();
+      this.recetas = recetas;
     },
     async eliminarReceta(id) {
-      try {
-        await axios.delete(`https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas/${id}`);
-        this.recetas = this.recetas.filter(receta => receta.id !== id);
-        this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
-      } catch (error) {
-        console.error('Error al eliminar la receta:', error);
+      const receta = this.recetas.find(receta => receta.id === id);
+      if (receta.autor === this.globalStore.getActiveUsername) {
+        try {
+          await servicioRecetas.remove(id);
+          this.recetas = this.recetas.filter(receta => receta.id !== id);
+          this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
+        } catch (error) {
+          console.error('Error al eliminar la receta:', error);
+        }
+      } else {
+        alert('No tienes permiso para eliminar esta receta.');
       }
     },
     async marcarFavorita(receta) {
       try {
         receta.esFavorita = !receta.esFavorita;
-        await axios.put(`https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas/${receta.id}`, receta);
+        await servicioRecetas.update(receta.id, receta);
         this.recetasFavoritas = this.recetas.filter(receta => receta.esFavorita);
       } catch (error) {
         console.error('Error al marcar la receta como favorita:', error);
       }
     },
     abrirModalEditar(receta) {
-      this.recetaEditando = { ...receta };
-      this.mostrarModalEditar = true;
+      if (receta.autor === this.globalStore.getActiveUsername) {
+        this.recetaEditando = { ...receta };
+        this.mostrarModalEditar = true;
+      } else {
+        alert('No tienes permiso para editar esta receta.');
+      }
     },
     cerrarModalEditar() {
       this.mostrarModalEditar = false;
@@ -59,7 +56,7 @@ export default {
     },
     async guardarEdicion() {
       try {
-        await axios.put(`https://66663bb1a2f8516ff7a2e4b0.mockapi.io/recetas/${this.recetaEditando.id}`, this.recetaEditando);
+        await servicioRecetas.update(this.recetaEditando.id, this.recetaEditando);
         this.cargarRecetas();
         this.cerrarModalEditar();
       } catch (error) {

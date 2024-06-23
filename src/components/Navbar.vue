@@ -1,5 +1,4 @@
 <template>
- <!--  <section class="src-componentes-navbar"> -->
     <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
       <router-link class="navbar-brand" to="/">Inicio</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,7 +18,6 @@
         </ul>
       </div>
     </nav>
-  <!-- </section> -->
 
 </template>
 
@@ -30,7 +28,5 @@ export default {
 </script>
 
 <style scoped>
-/*.src-componentes-navbar {
-  color: red;
-}*/
+
 </style>

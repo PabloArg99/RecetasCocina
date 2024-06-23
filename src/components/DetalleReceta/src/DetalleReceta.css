@@ -77,4 +77,10 @@
   .receta-item {
     font-size: 1.4rem;
   }
+  .receta-autor {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #333; 
+    margin-top: 10px;
+  }
 }
