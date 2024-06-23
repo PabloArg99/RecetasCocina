@@ -20,6 +20,7 @@
 .recetas-subtitle {
   font-size: 1.6rem;
   margin-bottom: 10px;
+  margin-left: 55px;
   color: #555;
 }
 
@@ -168,4 +169,8 @@
   color: #212529;
   background-color: #ffc107;
   border-color: #ffc107;
+}
+.user{
+  margin-left: 55px;
+
 }

@@ -28,7 +28,8 @@ export default {
       if (!valor) {
         this[campo] = error;
       } else if (valor.length < 2) {
-        this[campo] = `El ${campo} debe tener al menos 2 caracteres.`;
+        this[campo] = `El campo debe tener al menos 2 caracteres.`;
+        // this[campo] = `El ${campo} debe tener al menos 2 caracteres.`;
       }
     },
     validateNombre() {
@@ -91,7 +92,8 @@ export default {
           this.receta.pasos = [];
           this.receta.imagen = '';
 
-          this.$emit('recetaAgregada', response); 
+          this.$emit('recetaAgregada', response);
+          this.$router.push('/'); 
         } catch (error) {
           console.error('Error al enviar la receta:', error);
         }
@@ -107,16 +109,11 @@ export default {
   computed: {
     validarBotonEnvio() {
       return (
-        !!this.nombreError ||
-        !!this.descripcionError ||
-        !!this.ingredientesError ||
-        !!this.pasosError ||
-        !this.receta.nombre ||
-        !this.receta.descripcion ||
         this.receta.nombre.length < 2 ||
         this.receta.descripcion.length < 2 ||
         this.receta.ingredientes.length === 0 ||
         this.receta.pasos.length === 0
+      
       );
     }
   }

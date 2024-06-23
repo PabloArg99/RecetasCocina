@@ -7,7 +7,8 @@ export default {
       receta: null,
       showDescripcion: false,
       showIngredientes: false,
-      showPasos: false
+      showPasos: false,
+      showAutor: false
     };
   },
   created() {
