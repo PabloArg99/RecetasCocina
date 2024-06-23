@@ -1,74 +1,71 @@
+<div class="container mt-5">
+  <h1 class="recetas-title">Lista de Recetas</h1>
+  <h3 class="recetas-subtitle">Cantidad de Recetas: <span v-text="contarCantidadRecetas"></span></h3>
+  <h4 class="user" style="text-decoration: underline;">Usuario Activo : {{ globalStore.getActiveUsername }}</h4>
 
-    <div class="container mt-5">
-      <h1 class="recetas-title">Lista de Recetas</h1>
-      <h3 class="recetas-subtitle">Cantidad de Recetas: <span v-text="contarCantidadRecetas"></span></h3>
-      <h4 class="user"style="text-decoration: underline;">Usuario Activo : {{ globalStore.getActiveUsername }}</h4>
-  
-      <ul class="recetas-list">
-        <li v-for="receta in recetas" :key="receta.id" class="receta-item">
-          <div class="receta-actions">
-            <div class="card">
-              <div class="card-body">
-                
-                <router-link :to="'/receta/' + receta.id" class="receta-link"><h2 class="card-title">{{ receta.nombre }}</h2></router-link>
-                <img v-if="receta.imagen" :src="receta.imagen" alt="Imagen de la receta" class="receta-image">
-                <br>
-                <br>
-                <button @click="eliminarReceta(receta.id)" class="btn btn-danger">Eliminar</button>
-                <button @click="marcarFavorita(receta)" :class="{'btn': true, 'btn-primary': !receta.esFavorita, 'btn-secondary': receta.esFavorita}">
-                  {{ receta.esFavorita ? 'Quitar de Favoritas' : 'Marcar Favorita' }}
-                </button>
-                <button @click="abrirModalEditar(receta)" class="btn btn-warning">Editar</button>
-              </div>
-            </div>
-          </div>
-          
-        </li>
-      </ul>
-  
-      <div class="recetas-favoritas">
-        <h3 class="recetas-subtitle mt-4">Recetas Favoritas</h3>
-        <ul v-if="recetasFavoritas.length > 0" class="recetas-list">
-          <li v-for="receta in recetasFavoritas" :key="receta.id" class="receta-item">
-            <router-link :to="'/receta/' + receta.id" class="receta-link">{{ receta.nombre }}</router-link>
-          </li>
-        </ul>
-        <p v-else class="recetas-empty">No hay recetas favoritas.</p>
-      </div>
-  
-      <div v-if="mostrarModalEditar" class="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Editar Receta</h5>
-              <button type="button" class="close" @click="cerrarModalEditar" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form @submit.prevent="guardarEdicion">
-                <div class="form-group">
-                  <label for="nombreReceta">Nombre</label>
-                  <input type="text" class="form-control" id="nombreReceta" v-model="recetaEditando.nombre" required>
-                </div>
-                <div class="form-group">
-                  <label for="descripcionReceta">Descripción</label>
-                  <textarea class="form-control" id="descripcionReceta" v-model="recetaEditando.descripcion" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="ingredientesReceta">Ingredientes</label>
-                  <textarea class="form-control" id="ingredientesReceta" v-model="recetaEditando.ingredientes" required></textarea>
-                </div>
-                <div class="form-group">
-                  <label for="pasosReceta">Pasos</label>
-                  <textarea class="form-control" id="pasosReceta" v-model="recetaEditando.pasos" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Guardar</button>
-                <button type="button" class="btn btn-secondary" @click="cerrarModalEditar">Cancelar</button>
-              </form>
-            </div>
+  <ul class="recetas-list">
+    <li v-for="receta in recetas" :key="receta.id" class="receta-item">
+      <div class="receta-actions">
+        <div class="card">
+          <div class="card-body">
+            <router-link :to="'/receta/' + receta.id" class="receta-link">
+              <h2 class="card-title">{{ receta.nombre }}</h2>
+            </router-link>
+            <img v-if="receta.imagen" :src="receta.imagen" alt="Imagen de la receta" class="receta-image">
+            <br><br>
+            <button @click="eliminarReceta(receta.id)" class="btn btn-danger">Eliminar</button>
+            <button @click="marcarFavorita(receta)" :class="{'btn': true, 'btn-primary': !receta.esFavorita, 'btn-secondary': receta.esFavorita}">
+              {{ receta.esFavorita ? 'Quitar de Favoritas' : 'Marcar Favorita' }}
+            </button>
+            <button @click="abrirModalEditar(receta)" class="btn btn-warning">Editar</button>
           </div>
         </div>
       </div>
+    </li>
+  </ul>
+
+  <div class="recetas-favoritas">
+    <h3 class="recetas-subtitle mt-4">Recetas Favoritas</h3>
+    <ul v-if="recetasFavoritas.length > 0" class="recetas-list">
+      <li v-for="receta in recetasFavoritas" :key="receta.id" class="receta-item">
+        <router-link :to="'/receta/' + receta.id" class="receta-link">{{ receta.nombre }}</router-link>
+      </li>
+    </ul>
+    <p v-else class="recetas-empty">No hay recetas favoritas.</p>
+  </div>
+
+  <div v-if="mostrarModalEditar" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Receta</h5>
+          <button type="button" class="close" @click="cerrarModalEditar" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form @submit.prevent="guardarEdicion">
+            <div class="form-group">
+              <label for="nombreReceta">Nombre</label>
+              <input type="text" class="form-control" id="nombreReceta" v-model="recetaEditando.nombre" required>
+            </div>
+            <div class="form-group">
+              <label for="descripcionReceta">Descripción</label>
+              <textarea class="form-control" id="descripcionReceta" v-model="recetaEditando.descripcion" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="ingredientesReceta">Ingredientes</label>
+              <textarea class="form-control" id="ingredientesReceta" v-model="ingredientesString" required></textarea>
+            </div>
+            <div class="form-group">
+              <label for="pasosReceta">Pasos</label>
+              <textarea class="form-control" id="pasosReceta" v-model="pasosString" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" @click="cerrarModalEditar">Cancelar</button>
+          </form>
+        </div>
+      </div>
     </div>
- 
+  </div>
+</div>

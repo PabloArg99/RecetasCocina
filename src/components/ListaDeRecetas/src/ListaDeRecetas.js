@@ -8,6 +8,8 @@ export default {
       recetasFavoritas: [],
       mostrarModalEditar: false,
       recetaEditando: {},
+      ingredientesString: '',
+      pasosString: '',
       globalStore: useGlobalStore(),
     };
   },
@@ -44,7 +46,12 @@ export default {
     },
     abrirModalEditar(receta) {
       if (receta.autor === this.globalStore.getActiveUsername) {
-        this.recetaEditando = { ...receta };
+        const ingredientes = Array.isArray(receta.ingredientes) ? receta.ingredientes : [];
+        const pasos = Array.isArray(receta.pasos) ? receta.pasos : [];
+
+        this.recetaEditando = { ...receta, ingredientes, pasos };
+        this.ingredientesString = this.recetaEditando.ingredientes.join('\n');
+        this.pasosString = this.recetaEditando.pasos.join('\n');
         this.mostrarModalEditar = true;
       } else {
         alert('No tienes permiso para editar esta receta.');
@@ -53,9 +60,17 @@ export default {
     cerrarModalEditar() {
       this.mostrarModalEditar = false;
       this.recetaEditando = {};
+      this.ingredientesString = '';
+      this.pasosString = '';
+    },
+    formatearReceta(receta) {
+      receta.ingredientes = this.ingredientesString.split('\n').map(ing => ing.trim());
+      receta.pasos = this.pasosString.split('\n').map(paso => paso.trim());
+      return receta;
     },
     async guardarEdicion() {
       try {
+        this.recetaEditando = this.formatearReceta(this.recetaEditando);
         await servicioRecetas.update(this.recetaEditando.id, this.recetaEditando);
         this.cargarRecetas();
         this.cerrarModalEditar();
