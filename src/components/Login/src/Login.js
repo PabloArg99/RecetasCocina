@@ -25,7 +25,6 @@ export default {
         if (response.data.length > 0) {
           alert('Inicio de sesión exitoso');
           this.globalStore.setActiveUsername(this.credentials.username)
-          // Aquí podrías redirigir al usuario a otra página, por ejemplo:
            this.$router.push('/');
         } else {
           alert('Usuario o contraseña incorrectos');

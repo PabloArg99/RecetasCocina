@@ -2,20 +2,27 @@
     <div class="container mt-5">
       <h1 class="recetas-title">Lista de Recetas</h1>
       <h3 class="recetas-subtitle">Cantidad de Recetas: <span v-text="contarCantidadRecetas"></span></h3>
-      <h4>Usuario Activo : {{ globalStore.getActiveUsername }}</h4>
+      <h4 style="text-decoration: underline;">Usuario Activo : {{ globalStore.getActiveUsername }}</h4>
   
       <ul class="recetas-list">
         <li v-for="receta in recetas" :key="receta.id" class="receta-item">
-          
-          <router-link :to="'/receta/' + receta.id" class="receta-link">{{ receta.nombre }}</router-link>
           <div class="receta-actions">
-            <img v-if="receta.imagen" :src="receta.imagen" alt="Imagen de la receta" class="receta-image">
-            <button @click="eliminarReceta(receta.id)" class="btn btn-danger">Eliminar</button>
-            <button @click="marcarFavorita(receta)" :class="{'btn': true, 'btn-primary': !receta.esFavorita, 'btn-secondary': receta.esFavorita}">
-              {{ receta.esFavorita ? 'Quitar de Favoritas' : 'Marcar Favorita' }}
-            </button>
-            <button @click="abrirModalEditar(receta)" class="btn btn-warning">Editar</button>
+            <div class="card">
+              <div class="card-body">
+                
+                <router-link :to="'/receta/' + receta.id" class="receta-link"><h2 class="card-title">{{ receta.nombre }}</h2></router-link>
+                <img v-if="receta.imagen" :src="receta.imagen" alt="Imagen de la receta" class="receta-image">
+                <br>
+                <br>
+                <button @click="eliminarReceta(receta.id)" class="btn btn-danger">Eliminar</button>
+                <button @click="marcarFavorita(receta)" :class="{'btn': true, 'btn-primary': !receta.esFavorita, 'btn-secondary': receta.esFavorita}">
+                  {{ receta.esFavorita ? 'Quitar de Favoritas' : 'Marcar Favorita' }}
+                </button>
+                <button @click="abrirModalEditar(receta)" class="btn btn-warning">Editar</button>
+              </div>
+            </div>
           </div>
+          
         </li>
       </ul>
   
