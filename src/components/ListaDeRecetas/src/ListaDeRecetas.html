@@ -1,4 +1,5 @@
 <div class="container mt-5">
+  <br>
   <h1 class="recetas-title">Lista de Recetas</h1>
   <h3 class="recetas-subtitle">Cantidad de Recetas: <span v-text="contarCantidadRecetas"></span></h3>
   <h4 class="user" style="text-decoration: underline;">Usuario Activo : {{ globalStore.getActiveUsername }}</h4>
@@ -6,7 +7,7 @@
   <ul class="recetas-list">
     <li v-for="receta in recetas" :key="receta.id" class="receta-item">
       <div class="receta-actions">
-        <div class="card">
+        <div class="card bg-warning mb-3">
           <div class="card-body">
             <router-link :to="'/receta/' + receta.id" class="receta-link">
               <h2 class="card-title">{{ receta.nombre }}</h2>
@@ -17,7 +18,7 @@
             <button @click="marcarFavorita(receta)" :class="{'btn': true, 'btn-primary': !receta.esFavorita, 'btn-secondary': receta.esFavorita}">
               {{ receta.esFavorita ? 'Quitar de Favoritas' : 'Marcar Favorita' }}
             </button>
-            <button @click="abrirModalEditar(receta)" class="btn btn-warning">Editar</button>
+            <button @click="abrirModalEditar(receta)" class="btn btn-success">Editar</button>
           </div>
         </div>
       </div>
