@@ -26,10 +26,9 @@ export default {
           alert('Inicio de sesión exitoso');
           this.globalStore.setActiveUsername(this.credentials.username)
            this.$router.push('/');
-        } else {
-          alert('Usuario o contraseña incorrectos');
-        }
+        } 
       } catch (error) {
+        alert('Usuario o contraseña incorrectos');
         console.error(error);
       }
     },
